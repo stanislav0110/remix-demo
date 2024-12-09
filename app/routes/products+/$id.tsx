@@ -8,15 +8,11 @@ import {useTranslation} from 'react-i18next';
 
 import {queryClient} from '~/services/client';
 import {useQueryProductsGet, useMutationProductsUpdate} from '~/services/products';
+import {ProductFormData, ProductResponse} from '~/types/products';
 
 import {useI18nNavigate} from '~/global/hooks/use-i18n-navigate';
-
 import {PageShell} from '~/global/components/page-shell';
-
 import {ProductsForm} from './components/form';
-
-//
-//
 
 export const handle = {i18n: ['common', 'products']};
 export const meta: MetaFunction = () => [{title: 'Remix App - Edit a category'}];
@@ -36,8 +32,6 @@ export const clientLoader = async ({params}: ClientLoaderFunctionArgs & {params:
     item: item.result!,
   };
 };
-
-//
 
 const schema = yup
   .object({
@@ -59,25 +53,20 @@ const schema = yup
   })
   .required();
 
-//
-//
-
-export default function ProductsCreate() {
+export default function ProductsEdit() {
   const {t} = useTranslation(handle.i18n);
   const navigate = useI18nNavigate();
   const {enqueueSnackbar} = useSnackbar();
   const {item} = useLoaderData<typeof clientLoader>();
   const mutate = useMutationProductsUpdate();
 
-  const form = useForm({
+  const form = useForm<ProductFormData>({
     mode: 'onChange',
     defaultValues: {categoryId: '', ...item},
     resolver: yupResolver(schema),
   });
 
-  //
-
-  const onSubmit = form.handleSubmit(async payload => {
+  const onSubmit = form.handleSubmit(async (payload: ProductFormData) => {
     const response = await mutate.mutateAsync({id: item.productId, payload});
 
     if (response?.errors?.length) {
@@ -93,9 +82,6 @@ export default function ProductsCreate() {
   });
 
   const isLoading = mutate.isPending || !!mutate.data?.result;
-
-  //
-  //
 
   return (
     <FormProvider {...form}>

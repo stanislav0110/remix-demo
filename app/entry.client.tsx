@@ -3,12 +3,12 @@ import {hydrateRoot} from 'react-dom/client';
 import {RemixBrowser} from '@remix-run/react';
 import i18next from 'i18next';
 import {I18nextProvider, initReactI18next} from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import Backend from 'i18next-http-backend';
-import {getInitialNamespaces} from 'remix-i18next/client';
+import type LanguageDetector from 'i18next-browser-languagedetector';
+import type Backend from 'i18next-http-backend';
+import type {getInitialNamespaces} from 'remix-i18next/client';
 
-import {ThemeProvider} from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import type {ThemeProvider} from '@mui/material/styles';
+import type CssBaseline from '@mui/material/CssBaseline';
 
 import theme from '~/global/components/mui/theme';
 

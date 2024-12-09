@@ -1,18 +1,17 @@
 import {useTranslation} from 'react-i18next';
-
+import {useFormContext} from 'react-hook-form';
 import {Box, Grid2, InputAdornment, MenuItem} from '@mui/material';
 
 import {useQueryCategoriesList} from '~/services/categories';
+import type {ProductFormData} from '~/types/products';
 
 import {AppInput} from '~/global/components/app-input';
 import {AppInputSwitch} from '~/global/components/app-input-switch';
 
-//
-//
-
 export const ProductsForm = () => {
   const {t} = useTranslation(['common', 'products']);
   const categories = useQueryCategoriesList();
+  const {formState: {errors}} = useFormContext<ProductFormData>();
 
   return (
     <>

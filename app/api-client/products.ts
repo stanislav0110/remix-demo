@@ -1,11 +1,9 @@
 import {apiClient, handleApiError} from './client';
-import {ApiResponse, ApiProduct, ApiOptions, ApiPayload} from './types';
-
-//
-//
+import {ApiOptions, ApiPayload} from './types';
+import {Product, ProductFormData, ProductResponse, ProductsListResponse} from '~/types/products';
 
 export type apiProductsListPayload = ApiOptions;
-export type apiProductsListResponse = ApiResponse<ApiProduct[]>;
+export type apiProductsListResponse = ProductsListResponse;
 
 export const apiProductsList = async ({options}: apiProductsListPayload = {}) => {
   try {
@@ -15,10 +13,8 @@ export const apiProductsList = async ({options}: apiProductsListPayload = {}) =>
   }
 };
 
-//
-
 export type apiProductsGetPayload = {id: string} & ApiOptions;
-export type apiProductsGetResponse = ApiResponse<ApiProduct>;
+export type apiProductsGetResponse = ProductResponse;
 
 export const apiProductsGet = async ({id, options}: apiProductsGetPayload) => {
   try {
@@ -28,12 +24,8 @@ export const apiProductsGet = async ({id, options}: apiProductsGetPayload) => {
   }
 };
 
-//
-
-export type apiProductsCreatePayload = ApiPayload<
-  Omit<ApiProduct, 'productId' | 'userId' | 'createdAt' | 'updatedAt'>
->;
-export type apiProductsCreateResponse = apiProductsGetResponse;
+export type apiProductsCreatePayload = ApiPayload<ProductFormData>;
+export type apiProductsCreateResponse = ProductResponse;
 
 export const apiProductsCreate = async ({payload, options}: apiProductsCreatePayload) => {
   try {
@@ -45,12 +37,8 @@ export const apiProductsCreate = async ({payload, options}: apiProductsCreatePay
   }
 };
 
-//
-
-export type apiProductsUpdatePayload = {id: string} & ApiPayload<
-  Partial<apiProductsCreatePayload['payload']>
->;
-export type apiProductsUpdateResponse = apiProductsGetResponse;
+export type apiProductsUpdatePayload = {id: string} & ApiPayload<Partial<ProductFormData>>;
+export type apiProductsUpdateResponse = ProductResponse;
 
 export const apiProductsUpdate = async ({id, payload, options}: apiProductsUpdatePayload) => {
   try {
@@ -62,10 +50,8 @@ export const apiProductsUpdate = async ({id, payload, options}: apiProductsUpdat
   }
 };
 
-//
-
 export type apiProductsDeletePayload = apiProductsGetPayload;
-export type apiProductsDeleteResponse = apiProductsGetResponse;
+export type apiProductsDeleteResponse = ProductResponse;
 
 export const apiProductsDelete = async ({id, options}: apiProductsDeletePayload) => {
   try {

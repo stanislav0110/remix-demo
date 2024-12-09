@@ -7,15 +7,11 @@ import {useSnackbar} from 'notistack';
 import * as yup from 'yup';
 
 import {useMutationProductsCreate} from '~/services/products';
+import {ProductFormData} from '~/types/products';
 
 import {useI18nNavigate} from '~/global/hooks/use-i18n-navigate';
-
 import {PageShell} from '~/global/components/page-shell';
-
 import {ProductsForm} from './components/form';
-
-//
-//
 
 export const handle = {i18n: ['common', 'products']};
 export const meta: MetaFunction = () => [{title: 'Remix App - Create a category'}];
@@ -24,7 +20,6 @@ export const clientLoader = async () => {
   if (!window.localStorage.getItem('_at')) {
     return redirect('/');
   }
-
   return null;
 };
 
@@ -48,16 +43,13 @@ const schema = yup
   })
   .required();
 
-//
-//
-
 export default function ProductsCreate() {
   const navigate = useI18nNavigate();
   const {enqueueSnackbar} = useSnackbar();
   const {t} = useTranslation(handle.i18n);
   const mutate = useMutationProductsCreate();
 
-  const form = useForm({
+  const form = useForm<ProductFormData>({
     mode: 'onChange',
     defaultValues: {
       title: {en: '', ar: ''},
@@ -73,9 +65,7 @@ export default function ProductsCreate() {
     resolver: yupResolver(schema),
   });
 
-  //
-
-  const onSubmit = form.handleSubmit(async payload => {
+  const onSubmit = form.handleSubmit(async (payload: ProductFormData) => {
     const response = await mutate.mutateAsync({payload});
 
     if (response?.errors?.length) {
@@ -91,9 +81,6 @@ export default function ProductsCreate() {
   });
 
   const isLoading = mutate.isPending || !!mutate.data?.result;
-
-  //
-  //
 
   return (
     <FormProvider {...form}>
